@@ -13,3 +13,10 @@ export class CreateCustomerBody {
   @IsNotEmpty()
   password: string;
 }
+
+export class UpdateCustomerBody {
+  email?: string;
+  name?: string;
+  phone?: string;
+  password?: string;
+}

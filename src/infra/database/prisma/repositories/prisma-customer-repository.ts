@@ -15,4 +15,26 @@ export class PrismaCustomerRepository implements CustomerRepository {
     const customers = await this.prismaService.customer.findMany();
     return customers.map(PrismaCustomerMapper.toDomain);
   }
+  async findById(id: string): Promise<Customer | undefined> {
+    const raw = await this.prismaService.customer.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!raw) {
+      return;
+    }
+
+    return PrismaCustomerMapper.toDomain(raw);
+  }
+
+  async save(customer: Customer): Promise<void> {
+    await this.prismaService.customer.update({
+      where: {
+        id: customer.id,
+      },
+      data: PrismaCustomerMapper.toPrisma(customer),
+    });
+  }
 }

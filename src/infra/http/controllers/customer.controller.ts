@@ -1,14 +1,19 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateCustomerBody } from '../dtos/create-customer-body';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  CreateCustomerBody,
+  UpdateCustomerBody,
+} from '../dtos/create-customer-body';
 import { CreateCustomer } from '@app/use-cases/create-customer';
 import { CustomerViewModel } from '../view-model/customer-view-model';
 import { ListCustomers } from '@app/use-cases/list-customers';
+import { UpdateCustomer } from '@app/use-cases/update-customer';
 
 @Controller('/customers')
 export class CustomerController {
   constructor(
     private createCustomer: CreateCustomer,
     private listCustomers: ListCustomers,
+    private updateCustomer: UpdateCustomer,
   ) {}
 
   @Get()
@@ -29,6 +34,25 @@ export class CustomerController {
       name,
       phone,
       password,
+    });
+
+    return {
+      customer: CustomerViewModel.toHTTP(customer),
+    };
+  }
+
+  @Put(':customerId')
+  async update(
+    @Body() body: UpdateCustomerBody,
+    @Param('customerId') id: string,
+  ) {
+    const { name, email, phone, password } = body;
+    const { customer } = await this.updateCustomer.execute({
+      name,
+      email,
+      phone,
+      password,
+      id,
     });
 
     return {
