@@ -11,9 +11,17 @@ datasource db {
 }
 
 model Admin {
-  id       String  @id
-  email    String  @unique
-  name     String?
-  phone    String?
+  id       String @id
+  email    String @unique
+  name     String
+  phone    String
+  password String
+}
+
+model Customer {
+  id       String @id
+  email    String @unique
+  name     String
+  phone    String
   password String
 }
