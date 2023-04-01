@@ -37,4 +37,12 @@ export class PrismaCustomerRepository implements CustomerRepository {
       data: PrismaCustomerMapper.toPrisma(customer),
     });
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prismaService.customer.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

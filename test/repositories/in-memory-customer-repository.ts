@@ -22,4 +22,10 @@ export class InMemoryCustomerRepository implements CustomerRepository {
     );
     this.customers[customerIndex] = customer;
   }
+
+  async delete(id: string): Promise<void> {
+    const customer = await this.findById(id);
+    if (!customer) return;
+    this.customers.splice(this.customers.indexOf(customer), 1);
+  }
 }

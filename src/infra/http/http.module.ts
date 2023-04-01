@@ -4,10 +4,11 @@ import { CustomerController } from './controllers/customer.controller';
 import { DatabaseModule } from '@infra/database/database.module';
 import { ListCustomers } from '@app/use-cases/list-customers';
 import { UpdateCustomer } from '@app/use-cases/update-customer';
+import { DeleteCustomer } from '@app/use-cases/delete-customer';
 
 @Module({
   imports: [DatabaseModule],
-  providers: [CreateCustomer, ListCustomers, UpdateCustomer],
+  providers: [CreateCustomer, ListCustomers, UpdateCustomer, DeleteCustomer],
   controllers: [CustomerController],
 })
 export class HttpModule {}

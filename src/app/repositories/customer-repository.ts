@@ -5,4 +5,5 @@ export abstract class CustomerRepository {
   abstract findAll(): Promise<Customer[]>;
   abstract save(customer: Customer): Promise<void>;
   abstract findById(id: string): Promise<Customer | undefined>;
+  abstract delete(id: string): Promise<void>;
 }
