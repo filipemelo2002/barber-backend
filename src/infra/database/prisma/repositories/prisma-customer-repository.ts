@@ -11,4 +11,8 @@ export class PrismaCustomerRepository implements CustomerRepository {
     const raw = PrismaCustomerMapper.toPrisma(customer);
     await this.prismaService.customer.create({ data: raw });
   }
+  async findAll(): Promise<Customer[]> {
+    const customers = await this.prismaService.customer.findMany();
+    return customers.map(PrismaCustomerMapper.toDomain);
+  }
 }

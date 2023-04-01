@@ -7,4 +7,8 @@ export class InMemoryCustomerRepository implements CustomerRepository {
   async create(customer: Customer): Promise<void> {
     this.customers.push(customer);
   }
+
+  async findAll(): Promise<Customer[]> {
+    return this.customers;
+  }
 }
