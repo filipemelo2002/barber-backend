@@ -1,6 +1,7 @@
 import { hash } from 'bcrypt';
 import { Customer } from '../entities/customer';
 import { CustomerRepository } from '../repositories/customer-repository';
+import { Injectable } from '@nestjs/common';
 
 interface CreateCustomerResponse {
   customer: Customer;
@@ -12,7 +13,7 @@ interface CreateCustomerRequest {
   phone: string;
   password: string;
 }
-
+@Injectable()
 export class CreateCustomer {
   constructor(private customerService: CustomerRepository) {}
 
@@ -23,7 +24,7 @@ export class CreateCustomer {
 
     const passwordEncrypted = await hash(
       password,
-      process.env.BCRYPT_SALTS ?? 10,
+      parseInt(process.env.BCRYPT_SALTS ?? '10'),
     );
 
     const customer = new Customer({
