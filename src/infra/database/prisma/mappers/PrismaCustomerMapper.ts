@@ -17,7 +17,7 @@ export class PrismaCustomerMapper {
       {
         name: raw.name,
         email: raw.email,
-        phone: raw.name,
+        phone: raw.phone,
         password: raw.password,
       },
       raw.id,
