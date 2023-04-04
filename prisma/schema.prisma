@@ -28,9 +28,10 @@ model Customer {
 }
 
 model Appointment {
-  id         String   @id
-  customer   Customer @relation(fields: [customerId], references: [id])
+  id         String    @id
+  customer   Customer  @relation(fields: [customerId], references: [id])
   customerId String
   dueDate    DateTime
-  canceledAt DateTime
+  canceledAt DateTime?
+  createdAt  DateTime
 }
