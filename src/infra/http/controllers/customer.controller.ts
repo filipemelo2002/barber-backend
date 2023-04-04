@@ -16,6 +16,7 @@ import { CustomerViewModel } from '../view-model/customer-view-model';
 import { ListCustomers } from '@app/use-cases/list-customers';
 import { UpdateCustomer } from '@app/use-cases/update-customer';
 import { DeleteCustomer } from '@app/use-cases/delete-customer';
+import { GetCustomer } from '@app/use-cases/get-customer';
 
 @Controller('/customers')
 export class CustomerController {
@@ -24,6 +25,7 @@ export class CustomerController {
     private listCustomers: ListCustomers,
     private updateCustomer: UpdateCustomer,
     private deleteCustomer: DeleteCustomer,
+    private getCustomer: GetCustomer,
   ) {}
 
   @Get()
@@ -33,6 +35,13 @@ export class CustomerController {
     return {
       customers: customers.map(CustomerViewModel.toHTTP),
     };
+  }
+
+  @Get(':customerId')
+  async show(@Param('customerId') id: string) {
+    const { customer } = await this.getCustomer.execute({ customerId: id });
+
+    return { customer: CustomerViewModel.toHTTP(customer) };
   }
 
   @Post()
