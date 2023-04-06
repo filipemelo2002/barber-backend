@@ -3,6 +3,7 @@ import { AppointmentRepository } from '@app/repositories/appointment-repository'
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PrismaAppointmentMapper } from '../mappers/prisma-appointment-mapper';
+import { MINIMUM_APPOINTMENT_TIME_GAP } from '@constants/appointment';
 
 @Injectable()
 export class PrismaAppointmentRepository implements AppointmentRepository {
@@ -14,12 +15,11 @@ export class PrismaAppointmentRepository implements AppointmentRepository {
     });
   }
   async findByDate(date: Date): Promise<Appointment | undefined> {
-    const hourGap = 60 * 60 * 1000;
     const appointments = await this.prismaService.appointment.findMany({
       where: {
         dueDate: {
-          gte: new Date(date.getTime() - hourGap),
-          lt: new Date(date.getTime() + hourGap),
+          gte: new Date(date.getTime() - MINIMUM_APPOINTMENT_TIME_GAP),
+          lt: new Date(date.getTime() + MINIMUM_APPOINTMENT_TIME_GAP),
         },
       },
     });

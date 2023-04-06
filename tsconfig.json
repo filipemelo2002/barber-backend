@@ -21,7 +21,8 @@
     "paths": {
       "@infra/*": ["./src/infra/*"],
       "@app/*": ["./src/app/*"],
-      "@test/*": ["./test/*"]
+      "@test/*": ["./test/*"],
+      "@constants/*": ["./src/constants/*"]
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Appointment } from '@app/entities/appointment';
 import { AppointmentRepository } from '@app/repositories/appointment-repository';
+import { MINIMUM_APPOINTMENT_TIME_GAP } from '@constants/appointment';
 
 export class InMemoryAppointmentRepository extends AppointmentRepository {
   appointments: Appointment[] = [];
@@ -9,9 +10,10 @@ export class InMemoryAppointmentRepository extends AppointmentRepository {
   }
 
   async findByDate(date: Date): Promise<Appointment | undefined> {
-    const hourGap = 60 * 60 * 1000; //one hour gap at least
-    const previousHour = new Date(date.getTime() - hourGap);
-    const nextHour = new Date(date.getTime() + hourGap);
+    const previousHour = new Date(
+      date.getTime() - MINIMUM_APPOINTMENT_TIME_GAP,
+    );
+    const nextHour = new Date(date.getTime() + MINIMUM_APPOINTMENT_TIME_GAP);
     return this.appointments.filter(
       ({ dueDate }) => dueDate > previousHour && dueDate < nextHour,
     )[0];
