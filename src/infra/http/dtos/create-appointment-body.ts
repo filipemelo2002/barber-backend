@@ -5,5 +5,5 @@ export class CreateAppointmentBody {
   customerId: string;
 
   @IsNotEmpty()
-  dueDate: Date;
+  dueDate: string;
 }

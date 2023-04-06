@@ -11,7 +11,7 @@ export class AppointmentController {
     const { customerId, dueDate } = body;
     const { appointment } = await this.createAppointment.execute({
       customerId,
-      dueDate,
+      dueDate: new Date(dueDate),
     });
 
     return {
