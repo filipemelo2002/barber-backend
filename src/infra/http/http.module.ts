@@ -11,6 +11,9 @@ import { AppointmentController } from './controllers/appointment.controller';
 import { CreateAdmin } from '@app/use-cases/create-admin';
 import { ListAdmins } from '@app/use-cases/list-admins';
 import { AdminController } from './controllers/admin.controller';
+import { UpdateAdmin } from '@app/use-cases/update-admin';
+import { DeleteAdmin } from '@app/use-cases/delete-admin';
+import { GetAdmin } from '@app/use-cases/get-admin';
 
 @Module({
   imports: [DatabaseModule],
@@ -24,6 +27,9 @@ import { AdminController } from './controllers/admin.controller';
     CreateAppointment,
     CreateAdmin,
     ListAdmins,
+    UpdateAdmin,
+    DeleteAdmin,
+    GetAdmin,
   ],
   controllers: [CustomerController, AppointmentController, AdminController],
 })

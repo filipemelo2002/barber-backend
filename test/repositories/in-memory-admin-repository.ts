@@ -7,7 +7,23 @@ export class InMemoryAdminRepository implements AdminRepository {
   async create(admin: Admin): Promise<void> {
     this.admins.push(admin);
   }
+
   async findAll(): Promise<Admin[]> {
     return this.admins;
+  }
+
+  async findById(id: string): Promise<Admin | undefined> {
+    return this.admins.find((admin) => admin.id === id);
+  }
+
+  async save(admin: Admin): Promise<void> {
+    const adminIndex = this.admins.findIndex(({ id }) => id === admin.id);
+    this.admins[adminIndex] = admin;
+  }
+
+  async delete(id: string): Promise<void> {
+    const admin = await this.findById(id);
+    if (!admin) return;
+    this.admins.splice(this.admins.indexOf(admin), 1);
   }
 }
