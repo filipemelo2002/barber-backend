@@ -16,6 +16,7 @@ import { DeleteAdmin } from '@app/use-cases/delete-admin';
 import { GetAdmin } from '@app/use-cases/get-admin';
 import { APP_FILTER } from '@nestjs/core';
 import { AdminNotFoundExceptionFilter } from './filters/admin-not-found-exception-filter';
+import { CustomerNotFoundExceptionFilter } from './filters/customer-not-found-exception-filter';
 
 @Module({
   imports: [DatabaseModule],
@@ -35,6 +36,10 @@ import { AdminNotFoundExceptionFilter } from './filters/admin-not-found-exceptio
     {
       provide: APP_FILTER,
       useClass: AdminNotFoundExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: CustomerNotFoundExceptionFilter,
     },
   ],
   controllers: [CustomerController, AppointmentController, AdminController],
