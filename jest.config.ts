@@ -14,5 +14,10 @@ const config: Config = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),
+  modulePathIgnorePatterns: [
+    '<rootDir>/dist/',
+    '<rootDir>/prisma/',
+    '<rootDir>/src/infra',
+  ],
 };
 export default config;
