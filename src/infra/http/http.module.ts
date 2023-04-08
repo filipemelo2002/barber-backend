@@ -17,6 +17,7 @@ import { GetAdmin } from '@app/use-cases/get-admin';
 import { APP_FILTER } from '@nestjs/core';
 import { AdminNotFoundExceptionFilter } from './filters/admin-not-found-exception-filter';
 import { CustomerNotFoundExceptionFilter } from './filters/customer-not-found-exception-filter';
+import { AppointmentDateConflictExceptionFilter } from './filters/appointment-conflict-date-exception-filter';
 
 @Module({
   imports: [DatabaseModule],
@@ -40,6 +41,10 @@ import { CustomerNotFoundExceptionFilter } from './filters/customer-not-found-ex
     {
       provide: APP_FILTER,
       useClass: CustomerNotFoundExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AppointmentDateConflictExceptionFilter,
     },
   ],
   controllers: [CustomerController, AppointmentController, AdminController],
