@@ -1,6 +1,7 @@
 import { hash } from 'bcrypt';
 import { Admin } from '../entities/admin';
 import { AdminRepository } from '../repositories/admin-repository';
+import { Injectable } from '@nestjs/common';
 
 interface CreateAdminResponse {
   admin: Admin;
@@ -12,7 +13,7 @@ interface CreateAdminRequest {
   phone: string;
   password: string;
 }
-
+@Injectable()
 export class CreateAdmin {
   constructor(private adminService: AdminRepository) {}
 
@@ -21,7 +22,7 @@ export class CreateAdmin {
 
     const passwordEncrypted = await hash(
       password,
-      process.env.BCRYPT_SALTS ?? 10,
+      parseInt(process.env.BCRYPT_SALTS ?? '10'),
     );
 
     const admin = new Admin({
