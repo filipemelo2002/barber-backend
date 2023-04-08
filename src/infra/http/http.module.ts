@@ -8,6 +8,9 @@ import { DeleteCustomer } from '@app/use-cases/delete-customer';
 import { GetCustomer } from '@app/use-cases/get-customer';
 import { CreateAppointment } from '@app/use-cases/create-appointment';
 import { AppointmentController } from './controllers/appointment.controller';
+import { CreateAdmin } from '@app/use-cases/create-admin';
+import { ListAdmins } from '@app/use-cases/list-admins';
+import { AdminController } from './controllers/admin.controller';
 
 @Module({
   imports: [DatabaseModule],
@@ -19,7 +22,9 @@ import { AppointmentController } from './controllers/appointment.controller';
     DeleteCustomer,
     GetCustomer,
     CreateAppointment,
+    CreateAdmin,
+    ListAdmins,
   ],
-  controllers: [CustomerController, AppointmentController],
+  controllers: [CustomerController, AppointmentController, AdminController],
 })
 export class HttpModule {}

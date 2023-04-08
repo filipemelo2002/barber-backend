@@ -7,4 +7,7 @@ export class InMemoryAdminRepository implements AdminRepository {
   async create(admin: Admin): Promise<void> {
     this.admins.push(admin);
   }
+  async findAll(): Promise<Admin[]> {
+    return this.admins;
+  }
 }
