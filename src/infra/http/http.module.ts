@@ -18,9 +18,24 @@ import { APP_FILTER } from '@nestjs/core';
 import { AdminNotFoundExceptionFilter } from './filters/admin-not-found-exception-filter';
 import { CustomerNotFoundExceptionFilter } from './filters/customer-not-found-exception-filter';
 import { AppointmentDateConflictExceptionFilter } from './filters/appointment-conflict-date-exception-filter';
+import { JwtModule } from '@nestjs/jwt';
+import { JWTService } from './services/jwt.service';
+import { JWTAuthenticationService } from '@app/services/jwt-authentication-service';
+import { LoginController } from './controllers/login.controller';
+import { AuthAdmin } from '@app/use-cases/auth-admin';
+import { AdminIncorrectPasswordExceptionFilter } from './filters/admin-incorrect-password-exception-filter';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [
+    DatabaseModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {
+        expiresIn: '2 days',
+      },
+    }),
+  ],
 
   providers: [
     CreateCustomer,
@@ -46,7 +61,21 @@ import { AppointmentDateConflictExceptionFilter } from './filters/appointment-co
       provide: APP_FILTER,
       useClass: AppointmentDateConflictExceptionFilter,
     },
+    {
+      provide: JWTAuthenticationService,
+      useClass: JWTService,
+    },
+    AuthAdmin,
+    {
+      provide: APP_FILTER,
+      useClass: AdminIncorrectPasswordExceptionFilter,
+    },
   ],
-  controllers: [CustomerController, AppointmentController, AdminController],
+  controllers: [
+    CustomerController,
+    AppointmentController,
+    AdminController,
+    LoginController,
+  ],
 })
 export class HttpModule {}

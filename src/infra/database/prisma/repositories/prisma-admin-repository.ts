@@ -45,4 +45,14 @@ export class PrismaAdminRepository implements AdminRepository {
       },
     });
   }
+
+  async findByEmail(email: string): Promise<Admin | undefined> {
+    const raw = await this.prismaService.admin.findFirst({ where: { email } });
+
+    if (!raw) {
+      return;
+    }
+
+    return PrismaAdminMapper.toDomain(raw);
+  }
 }
