@@ -21,6 +21,7 @@ import { AppointmentDateConflictExceptionFilter } from './filters/appointment-co
 import { LoginController } from './controllers/login.controller';
 import { AuthModule } from '@infra/auth/auth.module';
 import { AdminIncorrectPasswordExceptionFilter } from './filters/admin-incorrect-password-exception-filter';
+import { MissingValidTokenExceptionFilter } from './filters/missing-valid-token-exception-filter';
 
 @Module({
   imports: [DatabaseModule, AuthModule],
@@ -52,6 +53,10 @@ import { AdminIncorrectPasswordExceptionFilter } from './filters/admin-incorrect
     {
       provide: APP_FILTER,
       useClass: AdminIncorrectPasswordExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: MissingValidTokenExceptionFilter,
     },
   ],
   controllers: [

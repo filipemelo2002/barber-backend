@@ -16,7 +16,7 @@ describe('Admin auth service', () => {
       phone: admin.phone,
       password: admin.password,
     });
-    const jwtService = new JwtMockService();
+    const jwtService = new JwtMockService(adminRepository);
     const authService = new AuthAdmin(adminRepository, jwtService);
 
     const { token } = await authService.execute({
@@ -38,7 +38,7 @@ describe('Admin auth service', () => {
       phone: admin.phone,
       password: admin.password,
     });
-    const jwtService = new JwtMockService();
+    const jwtService = new JwtMockService(adminRepository);
     const authService = new AuthAdmin(adminRepository, jwtService);
 
     expect(() => {

@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JWTAuthenticationService } from '@app/services/jwt-authentication-service';
 import { AuthAdmin } from '@app/use-cases/auth-admin';
 import { DatabaseModule } from '@infra/database/database.module';
+import { AdminGuard } from './admin.guard';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { DatabaseModule } from '@infra/database/database.module';
       useClass: JWTService,
     },
     AuthAdmin,
+    AdminGuard,
   ],
-  exports: [JWTAuthenticationService, AuthAdmin],
+  exports: [JWTAuthenticationService, AuthAdmin, AdminGuard],
 })
 export class AuthModule {}

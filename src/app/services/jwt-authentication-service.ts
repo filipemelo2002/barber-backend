@@ -12,4 +12,8 @@ export abstract class JWTAuthenticationService {
   abstract sign(
     request: JWTAuthenticationServiceRequest,
   ): Promise<JWTAuthenticationServiceResponse>;
+
+  abstract decode(
+    request: JWTAuthenticationServiceResponse,
+  ): Promise<JWTAuthenticationServiceRequest>;
 }
