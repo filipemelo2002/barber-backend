@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import {
   CreateCustomerBody,
@@ -17,6 +18,7 @@ import { ListCustomers } from '@app/use-cases/list-customers';
 import { UpdateCustomer } from '@app/use-cases/update-customer';
 import { DeleteCustomer } from '@app/use-cases/delete-customer';
 import { GetCustomer } from '@app/use-cases/get-customer';
+import { AdminGuard } from '@infra/auth/admin.guard';
 
 @Controller('/customers')
 export class CustomerController {
@@ -29,6 +31,7 @@ export class CustomerController {
   ) {}
 
   @Get()
+  @UseGuards(AdminGuard)
   async list() {
     const { customers } = await this.listCustomers.execute();
 

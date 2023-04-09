@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateAdminBody, UpdateAdminBody } from '../dtos/create-admin-body';
 import { CreateAdmin } from '@app/use-cases/create-admin';
@@ -14,6 +15,7 @@ import { ListAdmins } from '@app/use-cases/list-admins';
 import { UpdateAdmin } from '@app/use-cases/update-admin';
 import { DeleteAdmin } from '@app/use-cases/delete-admin';
 import { GetAdmin } from '@app/use-cases/get-admin';
+import { AdminGuard } from '@infra/auth/admin.guard';
 
 @Controller('/admins')
 export class AdminController {
@@ -26,6 +28,7 @@ export class AdminController {
   ) {}
 
   @Get()
+  @UseGuards(AdminGuard)
   async list() {
     const { admins } = await this.listAdmins.execute();
 
@@ -35,6 +38,7 @@ export class AdminController {
   }
 
   @Get(':adminId')
+  @UseGuards(AdminGuard)
   async show(@Param('adminId') id: string) {
     const { admin } = await this.getAdmin.execute({ adminId: id });
 
@@ -42,6 +46,7 @@ export class AdminController {
   }
 
   @Post()
+  @UseGuards(AdminGuard)
   async create(@Body() body: CreateAdminBody) {
     const { email, name, phone, password } = body;
 
@@ -58,6 +63,7 @@ export class AdminController {
   }
 
   @Put(':adminId')
+  @UseGuards(AdminGuard)
   async update(@Body() body: UpdateAdminBody, @Param('adminId') id: string) {
     const { name, email, phone, password } = body;
     const { admin } = await this.updateAdmin.execute({
@@ -74,6 +80,7 @@ export class AdminController {
   }
 
   @Delete(':adminId')
+  @UseGuards(AdminGuard)
   async delete(@Param('adminId') id: string) {
     await this.deleteAdmin.execute({ id });
   }
