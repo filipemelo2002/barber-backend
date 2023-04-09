@@ -13,7 +13,7 @@ export class LoginController {
     const { token } = await this.authAdmin.execute({ email, password });
 
     return {
-      token: LoginViewModel.toHTTP(token),
+      access_token: LoginViewModel.toHTTP(token),
     };
   }
 }
