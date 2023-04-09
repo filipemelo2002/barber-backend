@@ -6,4 +6,5 @@ export abstract class AdminRepository {
   abstract save(admin: Admin): Promise<void>;
   abstract findById(id: string): Promise<Admin | undefined>;
   abstract delete(id: string): Promise<void>;
+  abstract findByEmail(email: string): Promise<Admin | undefined>;
 }

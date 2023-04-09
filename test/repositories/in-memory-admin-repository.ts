@@ -26,4 +26,8 @@ export class InMemoryAdminRepository implements AdminRepository {
     if (!admin) return;
     this.admins.splice(this.admins.indexOf(admin), 1);
   }
+
+  async findByEmail(email: string): Promise<Admin | undefined> {
+    return this.admins.find((admin) => admin.email === email);
+  }
 }
