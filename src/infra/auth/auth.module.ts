@@ -6,6 +6,7 @@ import { AuthAdmin } from '@app/use-cases/auth-admin';
 import { DatabaseModule } from '@infra/database/database.module';
 import { AdminGuard } from './admin.guard';
 import { AdminCustomerGuard } from './admin-customer.guard';
+import { AuthCustomer } from '@app/use-cases/auth-customer';
 
 @Module({
   imports: [
@@ -24,12 +25,14 @@ import { AdminCustomerGuard } from './admin-customer.guard';
       useClass: JWTService,
     },
     AuthAdmin,
+    AuthCustomer,
     AdminGuard,
     AdminCustomerGuard,
   ],
   exports: [
     JWTAuthenticationService,
     AuthAdmin,
+    AuthCustomer,
     AdminGuard,
     AdminCustomerGuard,
   ],

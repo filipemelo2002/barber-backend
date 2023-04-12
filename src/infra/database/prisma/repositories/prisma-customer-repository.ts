@@ -45,4 +45,15 @@ export class PrismaCustomerRepository implements CustomerRepository {
       },
     });
   }
+  async findByEmail(email: string): Promise<Customer | undefined> {
+    const raw = await this.prismaService.customer.findFirst({
+      where: {
+        email,
+      },
+    });
+    if (!raw) {
+      return;
+    }
+    return PrismaCustomerMapper.toDomain(raw);
+  }
 }

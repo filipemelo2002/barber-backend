@@ -1,14 +1,21 @@
+import { Admin } from '@app/entities/admin';
 import { AdminRepository } from '@app/repositories/admin-repository';
+import { CustomerRepository } from '@app/repositories/customer-repository';
 import {
   JWTAuthenticationService,
   JWTAuthenticationServiceRequest,
   JWTAuthenticationServiceResponse,
 } from '@app/services/jwt-authentication-service';
 import { AdminNotFound } from '@app/use-cases/errors/admin-not-found';
+import { CustomerNotFound } from '@app/use-cases/errors/customer-not-found';
 import { randomUUID } from 'crypto';
 
-export class JwtMockService implements JWTAuthenticationService {
-  constructor(private adminRepository: AdminRepository) {}
+type JwtMockServiceRepository = AdminRepository | CustomerRepository;
+
+export class JwtMockService<T extends JwtMockServiceRepository>
+  implements JWTAuthenticationService
+{
+  constructor(private repository: T) {}
   async sign(
     request: JWTAuthenticationServiceRequest,
   ): Promise<JWTAuthenticationServiceResponse> {
@@ -22,16 +29,24 @@ export class JwtMockService implements JWTAuthenticationService {
 
     const email = token.split('#')[1];
 
-    const admin = await this.adminRepository.findByEmail(email);
+    const user = await this.repository.findByEmail(email);
 
-    if (!admin) {
+    const isAdminRepository = this.repository instanceof AdminRepository;
+
+    const isAdmin = user instanceof Admin;
+
+    if (isAdminRepository && !user) {
       throw new AdminNotFound();
     }
 
+    if (!isAdminRepository && !user) {
+      throw new CustomerNotFound();
+    }
+
     return {
-      email: admin?.email,
-      id: admin?.id,
-      isAdmin: true,
+      email: user?.email || '',
+      id: user?.id || '',
+      isAdmin,
     };
   }
 }

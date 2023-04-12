@@ -22,6 +22,7 @@ import { LoginController } from './controllers/login.controller';
 import { AuthModule } from '@infra/auth/auth.module';
 import { AdminIncorrectPasswordExceptionFilter } from './filters/admin-incorrect-password-exception-filter';
 import { MissingValidTokenExceptionFilter } from './filters/missing-valid-token-exception-filter';
+import { CustomerIncorrectPasswordExceptionFilter } from './filters/customer-incorrect-password-exception-filter';
 
 @Module({
   imports: [DatabaseModule, AuthModule],
@@ -57,6 +58,10 @@ import { MissingValidTokenExceptionFilter } from './filters/missing-valid-token-
     {
       provide: APP_FILTER,
       useClass: MissingValidTokenExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: CustomerIncorrectPasswordExceptionFilter,
     },
   ],
   controllers: [

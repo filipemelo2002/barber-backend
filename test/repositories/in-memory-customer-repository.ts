@@ -28,4 +28,7 @@ export class InMemoryCustomerRepository implements CustomerRepository {
     if (!customer) return;
     this.customers.splice(this.customers.indexOf(customer), 1);
   }
+  async findByEmail(email: string): Promise<Customer | undefined> {
+    return this.customers.find((customer) => customer.email === email);
+  }
 }
