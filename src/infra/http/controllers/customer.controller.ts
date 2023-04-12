@@ -19,6 +19,7 @@ import { UpdateCustomer } from '@app/use-cases/update-customer';
 import { DeleteCustomer } from '@app/use-cases/delete-customer';
 import { GetCustomer } from '@app/use-cases/get-customer';
 import { AdminGuard } from '@infra/auth/admin.guard';
+import { AdminCustomerGuard } from '@infra/auth/admin-customer.guard';
 
 @Controller('/customers')
 export class CustomerController {
@@ -40,8 +41,9 @@ export class CustomerController {
     };
   }
 
-  @Get(':customerId')
-  async show(@Param('customerId') id: string) {
+  @Get(':id')
+  @UseGuards(AdminCustomerGuard)
+  async show(@Param('id') id: string) {
     const { customer } = await this.getCustomer.execute({ customerId: id });
 
     return { customer: CustomerViewModel.toHTTP(customer) };
@@ -63,11 +65,9 @@ export class CustomerController {
     };
   }
 
-  @Put(':customerId')
-  async update(
-    @Body() body: UpdateCustomerBody,
-    @Param('customerId') id: string,
-  ) {
+  @Put(':id')
+  @UseGuards(AdminCustomerGuard)
+  async update(@Body() body: UpdateCustomerBody, @Param('id') id: string) {
     const { name, email, phone, password } = body;
     const { customer } = await this.updateCustomer.execute({
       name,
@@ -82,8 +82,9 @@ export class CustomerController {
     };
   }
 
-  @Delete(':customerId')
-  async delete(@Param('customerId') id: string) {
+  @Delete(':id')
+  @UseGuards(AdminCustomerGuard)
+  async delete(@Param('id') id: string) {
     await this.deleteCustomer.execute({ id });
   }
 }

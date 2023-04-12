@@ -37,9 +37,9 @@ export class AdminController {
     };
   }
 
-  @Get(':adminId')
+  @Get(':id')
   @UseGuards(AdminGuard)
-  async show(@Param('adminId') id: string) {
+  async show(@Param('id') id: string) {
     const { admin } = await this.getAdmin.execute({ adminId: id });
 
     return { admin: AdminViewModel.toHTTP(admin) };
@@ -62,9 +62,9 @@ export class AdminController {
     };
   }
 
-  @Put(':adminId')
+  @Put(':id')
   @UseGuards(AdminGuard)
-  async update(@Body() body: UpdateAdminBody, @Param('adminId') id: string) {
+  async update(@Body() body: UpdateAdminBody, @Param('id') id: string) {
     const { name, email, phone, password } = body;
     const { admin } = await this.updateAdmin.execute({
       name,
@@ -79,9 +79,9 @@ export class AdminController {
     };
   }
 
-  @Delete(':adminId')
+  @Delete(':id')
   @UseGuards(AdminGuard)
-  async delete(@Param('adminId') id: string) {
+  async delete(@Param('id') id: string) {
     await this.deleteAdmin.execute({ id });
   }
 }

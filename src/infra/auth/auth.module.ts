@@ -5,6 +5,7 @@ import { JWTAuthenticationService } from '@app/services/jwt-authentication-servi
 import { AuthAdmin } from '@app/use-cases/auth-admin';
 import { DatabaseModule } from '@infra/database/database.module';
 import { AdminGuard } from './admin.guard';
+import { AdminCustomerGuard } from './admin-customer.guard';
 
 @Module({
   imports: [
@@ -24,7 +25,13 @@ import { AdminGuard } from './admin.guard';
     },
     AuthAdmin,
     AdminGuard,
+    AdminCustomerGuard,
   ],
-  exports: [JWTAuthenticationService, AuthAdmin, AdminGuard],
+  exports: [
+    JWTAuthenticationService,
+    AuthAdmin,
+    AdminGuard,
+    AdminCustomerGuard,
+  ],
 })
 export class AuthModule {}
