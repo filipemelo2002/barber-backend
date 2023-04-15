@@ -1,5 +1,8 @@
 import { Appointment } from '@app/entities/appointment';
-import { AppointmentRepository } from '@app/repositories/appointment-repository';
+import {
+  AppointmentRepository,
+  AppointmentRepositoryFindByUserAndDayRequest,
+} from '@app/repositories/appointment-repository';
 import { MINIMUM_APPOINTMENT_TIME_GAP } from '@constants/appointment';
 
 export class InMemoryAppointmentRepository extends AppointmentRepository {
@@ -25,6 +28,20 @@ export class InMemoryAppointmentRepository extends AppointmentRepository {
     });
   }
 
+  async findByUserAndDay(
+    request: AppointmentRepositoryFindByUserAndDayRequest,
+  ): Promise<Appointment[]> {
+    const { dueDate, customerId } = request;
+    return this.appointments.filter((appointment) => {
+      if (dueDate) {
+        return (
+          this.isSameDay(appointment.dueDate, dueDate) &&
+          appointment.customerId === customerId
+        );
+      }
+      return appointment.customerId === customerId;
+    });
+  }
   private isSameDay(a: Date, b: Date) {
     return (
       a.getFullYear() === b.getFullYear() &&

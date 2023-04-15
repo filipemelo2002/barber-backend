@@ -24,6 +24,7 @@ import { AdminIncorrectPasswordExceptionFilter } from './filters/admin-incorrect
 import { MissingValidTokenExceptionFilter } from './filters/missing-valid-token-exception-filter';
 import { CustomerIncorrectPasswordExceptionFilter } from './filters/customer-incorrect-password-exception-filter';
 import { ListAppointmentsByDay } from '@app/use-cases/list-appointments-by-day';
+import { ListAppointmentsByCustomerAndDay } from '@app/use-cases/list-appointments-by-customer-and-day';
 
 @Module({
   imports: [DatabaseModule, AuthModule],
@@ -41,6 +42,7 @@ import { ListAppointmentsByDay } from '@app/use-cases/list-appointments-by-day';
     DeleteAdmin,
     GetAdmin,
     ListAppointmentsByDay,
+    ListAppointmentsByCustomerAndDay,
     {
       provide: APP_FILTER,
       useClass: AdminNotFoundExceptionFilter,

@@ -1,5 +1,8 @@
 import { Appointment } from '@app/entities/appointment';
-import { AppointmentRepository } from '@app/repositories/appointment-repository';
+import {
+  AppointmentRepository,
+  AppointmentRepositoryFindByUserAndDayRequest,
+} from '@app/repositories/appointment-repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PrismaAppointmentMapper } from '../mappers/prisma-appointment-mapper';
@@ -40,6 +43,27 @@ export class PrismaAppointmentRepository implements AppointmentRepository {
       },
     });
 
+    return raw.map(PrismaAppointmentMapper.toDomain);
+  }
+  async findByUserAndDay(
+    request: AppointmentRepositoryFindByUserAndDayRequest,
+  ): Promise<Appointment[]> {
+    const { dueDate, customerId } = request;
+
+    const dueDateQuery = dueDate
+      ? {
+          dueDate: {
+            lt: new Date(dueDate.getTime() + 24 * 60 * 60 * 1000),
+            gte: dueDate,
+          },
+        }
+      : {};
+    const raw = await this.prismaService.appointment.findMany({
+      where: {
+        customerId,
+        ...dueDateQuery,
+      },
+    });
     return raw.map(PrismaAppointmentMapper.toDomain);
   }
 }
