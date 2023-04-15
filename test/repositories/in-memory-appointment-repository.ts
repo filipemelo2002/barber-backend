@@ -18,4 +18,18 @@ export class InMemoryAppointmentRepository extends AppointmentRepository {
       ({ dueDate }) => dueDate > previousHour && dueDate < nextHour,
     )[0];
   }
+
+  async findByDay(date: Date): Promise<Appointment[]> {
+    return this.appointments.filter(({ dueDate }) => {
+      return this.isSameDay(dueDate, date);
+    });
+  }
+
+  private isSameDay(a: Date, b: Date) {
+    return (
+      a.getFullYear() === b.getFullYear() &&
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate()
+    );
+  }
 }

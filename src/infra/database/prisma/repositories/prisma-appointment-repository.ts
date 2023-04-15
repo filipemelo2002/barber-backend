@@ -29,4 +29,17 @@ export class PrismaAppointmentRepository implements AppointmentRepository {
     }
     return PrismaAppointmentMapper.toDomain(appointments[0]);
   }
+
+  async findByDay(date: Date): Promise<Appointment[]> {
+    const raw = await this.prismaService.appointment.findMany({
+      where: {
+        dueDate: {
+          lt: new Date(date.getTime() + 24 * 60 * 60 * 1000),
+          gte: date,
+        },
+      },
+    });
+
+    return raw.map(PrismaAppointmentMapper.toDomain);
+  }
 }
