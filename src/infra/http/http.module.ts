@@ -23,8 +23,7 @@ import { AuthModule } from '@infra/auth/auth.module';
 import { AdminIncorrectPasswordExceptionFilter } from './filters/admin-incorrect-password-exception-filter';
 import { MissingValidTokenExceptionFilter } from './filters/missing-valid-token-exception-filter';
 import { CustomerIncorrectPasswordExceptionFilter } from './filters/customer-incorrect-password-exception-filter';
-import { ListAppointmentsByDay } from '@app/use-cases/list-appointments-by-day';
-import { ListAppointmentsByCustomerAndDay } from '@app/use-cases/list-appointments-by-customer-and-day';
+import { FindAppointments } from '@app/use-cases/find-appointments';
 
 @Module({
   imports: [DatabaseModule, AuthModule],
@@ -41,8 +40,7 @@ import { ListAppointmentsByCustomerAndDay } from '@app/use-cases/list-appointmen
     UpdateAdmin,
     DeleteAdmin,
     GetAdmin,
-    ListAppointmentsByDay,
-    ListAppointmentsByCustomerAndDay,
+    FindAppointments,
     {
       provide: APP_FILTER,
       useClass: AdminNotFoundExceptionFilter,

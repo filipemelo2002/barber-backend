@@ -42,6 +42,31 @@ export class InMemoryAppointmentRepository extends AppointmentRepository {
       return appointment.customerId === customerId;
     });
   }
+
+  async find(
+    request: AppointmentRepositoryFindByUserAndDayRequest,
+  ): Promise<Appointment[]> {
+    const { dueDate, customerId } = request;
+
+    return this.appointments.filter((appointment) => {
+      if (dueDate && customerId) {
+        return (
+          this.isSameDay(appointment.dueDate, dueDate) &&
+          appointment.customerId === customerId
+        );
+      }
+
+      if (dueDate) {
+        return this.isSameDay(appointment.dueDate, dueDate);
+      }
+
+      if (customerId) {
+        return appointment.customerId === customerId;
+      }
+      return true;
+    });
+  }
+
   private isSameDay(a: Date, b: Date) {
     return (
       a.getFullYear() === b.getFullYear() &&

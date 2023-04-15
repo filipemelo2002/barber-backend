@@ -66,4 +66,33 @@ export class PrismaAppointmentRepository implements AppointmentRepository {
     });
     return raw.map(PrismaAppointmentMapper.toDomain);
   }
+
+  async find(
+    request: AppointmentRepositoryFindByUserAndDayRequest,
+  ): Promise<Appointment[]> {
+    const { dueDate, customerId } = request;
+    const customerIdQuery = customerId
+      ? {
+          customerId,
+        }
+      : {};
+
+    const dueDateQuery = dueDate
+      ? {
+          dueDate: {
+            lt: new Date(dueDate.getTime() + 24 * 60 * 60 * 1000),
+            gte: dueDate,
+          },
+        }
+      : {};
+
+    const raw = await this.prismaService.appointment.findMany({
+      where: {
+        ...customerIdQuery,
+        ...dueDateQuery,
+      },
+    });
+
+    return raw.map(PrismaAppointmentMapper.toDomain);
+  }
 }
