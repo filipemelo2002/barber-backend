@@ -1,9 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { SignInAdminBody } from '../dtos/sign-in-admin-body';
 import { AuthAdmin } from '@app/use-cases/auth-admin';
 import { LoginViewModel } from '../view-model/login-view-model';
 import { SignInCustomerBody } from '../dtos/sign-in-customer-body';
 import { AuthCustomer } from '@app/use-cases/auth-customer';
+import { Response } from 'express';
 
 @Controller('/login')
 export class LoginController {
@@ -12,10 +13,18 @@ export class LoginController {
     private authCustomer: AuthCustomer,
   ) {}
   @Post('/admin')
-  async signInAdmin(@Body() request: SignInAdminBody) {
+  async signInAdmin(
+    @Body() request: SignInAdminBody,
+    @Res({ passthrough: true }) response: Response,
+  ) {
     const { email, password } = request;
 
     const { token } = await this.authAdmin.execute({ email, password });
+
+    response.cookie('jwt', token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 3600 * 2),
+    });
 
     return {
       access_token: LoginViewModel.toHTTP(token),
@@ -23,11 +32,19 @@ export class LoginController {
   }
 
   @Post('/customer')
-  async signInCustomer(@Body() request: SignInCustomerBody) {
+  async signInCustomer(
+    @Body() request: SignInCustomerBody,
+    @Res({ passthrough: true }) response: Response,
+  ) {
     const { email, password } = request;
     const { token } = await this.authCustomer.execute({
       email,
       password,
+    });
+
+    response.cookie('jwt', token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 3600 * 2),
     });
 
     return {
