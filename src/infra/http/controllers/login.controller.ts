@@ -42,9 +42,12 @@ export class LoginController {
       password,
     });
 
+    const expires = new Date(Date.now());
+    expires.setDate(expires.getDate() + 2);
+
     response.cookie('jwt', token, {
       httpOnly: true,
-      expires: new Date(Date.now() + 3600 * 2),
+      expires,
     });
 
     return {
