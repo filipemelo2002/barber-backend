@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { CustomerNotFound } from './errors/customer-not-found';
 import { compare } from 'bcrypt';
 import { CustomerIncorrectPassword } from './errors/customer-incorrect-password';
+import { Customer } from '@app/entities/customer';
 
 interface AuthCustomerRequest {
   email: string;
@@ -12,6 +13,7 @@ interface AuthCustomerRequest {
 
 interface AuthCustomerResponse {
   token: string;
+  customer: Customer;
 }
 @Injectable()
 export class AuthCustomer {
@@ -43,6 +45,7 @@ export class AuthCustomer {
 
     return {
       token,
+      customer,
     };
   }
 }

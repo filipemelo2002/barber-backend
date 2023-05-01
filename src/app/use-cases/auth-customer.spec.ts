@@ -9,18 +9,19 @@ describe('Auth Customer', () => {
   it('should authenticate customer', async () => {
     const customerRepository = new InMemoryCustomerRepository();
     const createCustomer = new CreateCustomer(customerRepository);
-    const customer = makeCustomer();
+    const customerObj = makeCustomer();
 
-    await createCustomer.execute(customer);
+    const { customer: myCustomer } = await createCustomer.execute(customerObj);
     const jwtService = new JwtMockService(customerRepository);
     const authCustomer = new AuthCustomer(jwtService, customerRepository);
 
-    const { token } = await authCustomer.execute({
-      email: customer.email,
+    const { token, customer } = await authCustomer.execute({
+      email: customerObj.email,
       password: 'test',
     });
 
     expect(token).toBeTruthy();
+    expect(customer).toEqual(myCustomer);
   });
 
   it('should not authenticate customer', async () => {

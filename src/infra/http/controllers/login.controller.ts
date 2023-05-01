@@ -5,6 +5,7 @@ import { LoginViewModel } from '../view-model/login-view-model';
 import { SignInCustomerBody } from '../dtos/sign-in-customer-body';
 import { AuthCustomer } from '@app/use-cases/auth-customer';
 import { Response } from 'express';
+import { CustomerViewModel } from '../view-model/customer-view-model';
 
 @Controller('/login')
 export class LoginController {
@@ -37,7 +38,7 @@ export class LoginController {
     @Res({ passthrough: true }) response: Response,
   ) {
     const { email, password } = request;
-    const { token } = await this.authCustomer.execute({
+    const { token, customer } = await this.authCustomer.execute({
       email,
       password,
     });
@@ -52,6 +53,7 @@ export class LoginController {
 
     return {
       access_token: LoginViewModel.toHTTP(token),
+      customer: CustomerViewModel.toHTTP(customer),
     };
   }
 }
