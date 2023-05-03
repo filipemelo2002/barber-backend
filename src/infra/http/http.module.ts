@@ -24,6 +24,7 @@ import { AdminIncorrectPasswordExceptionFilter } from './filters/admin-incorrect
 import { MissingValidTokenExceptionFilter } from './filters/missing-valid-token-exception-filter';
 import { CustomerIncorrectPasswordExceptionFilter } from './filters/customer-incorrect-password-exception-filter';
 import { FindAppointments } from '@app/use-cases/find-appointments';
+import { CustomerAlreadyExistsExceptionFilter } from './filters/customer-already-existis-exception-filter';
 
 @Module({
   imports: [DatabaseModule, AuthModule],
@@ -64,6 +65,10 @@ import { FindAppointments } from '@app/use-cases/find-appointments';
     {
       provide: APP_FILTER,
       useClass: CustomerIncorrectPasswordExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: CustomerAlreadyExistsExceptionFilter,
     },
   ],
   controllers: [
