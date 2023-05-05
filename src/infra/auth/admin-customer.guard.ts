@@ -3,6 +3,7 @@ import { MissingValidToken } from './errors/missing-valid-token';
 import { JWTAuthenticationService } from '@app/services/jwt-authentication-service';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
+import { COOKIE_TOKEN_KEY } from '@constants/cookies';
 
 @Injectable()
 export class AdminCustomerGuard implements CanActivate {
@@ -26,6 +27,10 @@ export class AdminCustomerGuard implements CanActivate {
 
       const idParam = this.reflector.get<string>('id', context.getHandler());
 
+      if (!idParam) {
+        return true;
+      }
+
       return isAdmin || id === idParam;
     } catch (exception) {
       throw new MissingValidToken();
@@ -33,6 +38,12 @@ export class AdminCustomerGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
+    const cookieToken = request.cookies[COOKIE_TOKEN_KEY];
+
+    if (cookieToken) {
+      return cookieToken;
+    }
+
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }
