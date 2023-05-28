@@ -12,6 +12,8 @@ ARG DATABASE_URL
 
 ENV DATABASE_URL=$DATABASE_URL
 
+RUN echo "the env variable set is $DATABASE_URL"
+
 RUN  npx prisma generate
 
 RUN npx prisma migrate deploy
