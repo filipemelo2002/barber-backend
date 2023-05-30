@@ -8,6 +8,7 @@ import { Response } from 'express';
 import { CustomerViewModel } from '../view-model/customer-view-model';
 import { AdminCustomerGuard } from '@infra/auth/admin-customer.guard';
 import { COOKIE_TOKEN_KEY } from '@constants/cookies';
+import { ENVIRONMENT } from '@constants/environments';
 
 @Controller('/login')
 export class LoginController {
@@ -50,6 +51,9 @@ export class LoginController {
 
     response.cookie(COOKIE_TOKEN_KEY, token, {
       httpOnly: true,
+      secure: process.env.ENVIRONMENT === ENVIRONMENT.PROD,
+      sameSite:
+        process.env.ENVIRONMENT === ENVIRONMENT.PROD ? 'none' : undefined,
       expires,
     });
 
