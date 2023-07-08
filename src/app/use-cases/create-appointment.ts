@@ -1,29 +1,20 @@
 import { Appointment } from '@app/entities/appointment';
 import { AppointmentRepository } from '@app/repositories/appointment-repository';
 import { Injectable } from '@nestjs/common';
-import { AppointmentDateConflict } from './errors/appointment-date-conflict';
 
 interface CreateAppointmentRequest {
-  customerId: string;
+  customerId?: string;
   dueDate: Date;
 }
 @Injectable()
 export class CreateAppointment {
   constructor(private appointmentRepository: AppointmentRepository) {}
   async execute(request: CreateAppointmentRequest) {
-    const { customerId, dueDate } = request;
-
-    const appointmentConflict = await this.appointmentRepository.findByDate(
-      dueDate,
-    );
-
-    if (appointmentConflict) {
-      throw new AppointmentDateConflict();
-    }
+    const { dueDate, customerId } = request;
 
     const appointment = new Appointment({
-      customerId,
       dueDate,
+      customerId,
       createdAt: new Date(),
     });
 

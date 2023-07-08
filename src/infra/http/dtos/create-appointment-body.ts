@@ -1,8 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 
 export class CreateAppointmentBody {
-  @IsNotEmpty()
-  customerId: string;
+  customerId?: string;
 
   @IsNotEmpty()
   dueDate: string;

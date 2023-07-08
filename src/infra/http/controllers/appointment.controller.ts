@@ -4,6 +4,7 @@ import { CreateAppointment } from '@app/use-cases/create-appointment';
 import { AppointmentViewModel } from '../view-model/appointment-view-model';
 import { AdminCustomerGuard } from '@infra/auth/admin-customer.guard';
 import { FindAppointments } from '@app/use-cases/find-appointments';
+import { AdminGuard } from '@infra/auth/admin.guard';
 
 @Controller('appointments')
 export class AppointmentController {
@@ -12,12 +13,12 @@ export class AppointmentController {
     private findAppointments: FindAppointments,
   ) {}
   @Post()
-  @UseGuards(AdminCustomerGuard)
+  @UseGuards(AdminGuard)
   async create(@Body() body: CreateAppointmentBody) {
-    const { customerId, dueDate } = body;
+    const { dueDate, customerId } = body;
     const { appointment } = await this.createAppointment.execute({
-      customerId,
       dueDate: new Date(dueDate),
+      customerId,
     });
 
     return {

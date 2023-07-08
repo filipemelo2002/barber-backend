@@ -17,7 +17,6 @@ import { GetAdmin } from '@app/use-cases/get-admin';
 import { APP_FILTER } from '@nestjs/core';
 import { AdminNotFoundExceptionFilter } from './filters/admin-not-found-exception-filter';
 import { CustomerNotFoundExceptionFilter } from './filters/customer-not-found-exception-filter';
-import { AppointmentDateConflictExceptionFilter } from './filters/appointment-conflict-date-exception-filter';
 import { LoginController } from './controllers/login.controller';
 import { AuthModule } from '@infra/auth/auth.module';
 import { AdminIncorrectPasswordExceptionFilter } from './filters/admin-incorrect-password-exception-filter';
@@ -49,10 +48,6 @@ import { CustomerAlreadyExistsExceptionFilter } from './filters/customer-already
     {
       provide: APP_FILTER,
       useClass: CustomerNotFoundExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: AppointmentDateConflictExceptionFilter,
     },
     {
       provide: APP_FILTER,
