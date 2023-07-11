@@ -53,6 +53,7 @@ export class AppointmentController {
   }
 
   @Get()
+  @UseGuards(AdminCustomerGuard)
   async getByDay(@Query('dueDate') dueDate: string) {
     const { appointments } = await this.findAvailableAppointments.execute({
       dueDate: new Date(dueDate),
