@@ -2,7 +2,7 @@ import { hash } from 'bcrypt';
 import { Customer } from '../entities/customer';
 import { CustomerRepository } from '../repositories/customer-repository';
 import { Injectable } from '@nestjs/common';
-import { CustomerAlreadyExists } from './errors/customer-already-exists';
+import { CustomerEmailAlreadyExists } from './errors/customer-email-already-exists';
 
 interface CreateCustomerResponse {
   customer: Customer;
@@ -26,7 +26,7 @@ export class CreateCustomer {
     const userAlreadyExists = !!(await this.customerService.findByEmail(email));
 
     if (userAlreadyExists) {
-      throw new CustomerAlreadyExists();
+      throw new CustomerEmailAlreadyExists();
     }
 
     const passwordEncrypted = await hash(
