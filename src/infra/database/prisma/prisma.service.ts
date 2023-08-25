@@ -1,5 +1,5 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -13,3 +13,16 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
   }
 }
+
+const devDataSource: Prisma.Datasources = {
+  db: { url: 'file:./dev.db' },
+};
+
+const prodDataSource: Prisma.Datasources = {
+  db: { url: process.env.DATABASE_URL },
+};
+
+export const prismaService = new PrismaService({
+  datasources:
+    process.env.ENVIRONMENT === 'development' ? devDataSource : prodDataSource,
+});

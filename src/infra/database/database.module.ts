@@ -1,6 +1,6 @@
 import { CustomerRepository } from '@app/repositories/customer-repository';
 import { Module } from '@nestjs/common';
-import { PrismaService } from './prisma/prisma.service';
+import { PrismaService, prismaService } from './prisma/prisma.service';
 import { PrismaCustomerRepository } from './prisma/repositories/prisma-customer-repository';
 import { AppointmentRepository } from '@app/repositories/appointment-repository';
 import { PrismaAppointmentRepository } from './prisma/repositories/prisma-appointment-repository';
@@ -9,7 +9,10 @@ import { PrismaAdminRepository } from './prisma/repositories/prisma-admin-reposi
 
 @Module({
   providers: [
-    PrismaService,
+    {
+      provide: PrismaService,
+      useValue: prismaService,
+    },
     {
       provide: CustomerRepository,
       useClass: PrismaCustomerRepository,
