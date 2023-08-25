@@ -69,5 +69,7 @@ export class LoginController {
     response.clearCookie(COOKIE_TOKEN_KEY, {
       httpOnly: true,
     });
+    response.statusCode = 201;
+    response.end();
   }
 }

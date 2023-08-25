@@ -25,4 +25,8 @@ const prodDataSource: Prisma.Datasources = {
 export const prismaService = new PrismaService({
   datasources:
     process.env.ENVIRONMENT === 'development' ? devDataSource : prodDataSource,
+  log:
+    process.env.ENVIRONMENT === 'development'
+      ? ['query', 'info', 'warn', 'error']
+      : [],
 });
